@@ -1,0 +1,66 @@
+#INNER JOIN
+SELECT m.movie_id, title, budget, revenue, currency, unit
+FROM movies m
+JOIN financials f  #by default, mysql does inner join
+ON
+m.movie_id = f.movie_id;
+
+#LEFT JOIN
+SELECT m.movie_id, title, budget, revenue, currency, unit
+FROM movies m
+LEFT JOIN financials f  #when you do left, your from becomes your left table so it displays movie columns
+ON
+m.movie_id = f.movie_id;
+
+#RIGHT JOIN
+SELECT f.movie_id, title, budget, revenue, currency, unit
+FROM movies m
+RIGHT JOIN financials f  #change the movie_id for financials so it displays
+ON
+m.movie_id = f.movie_id; 
+
+#to get a full, outer join you use UNION
+SELECT m.movie_id, title, budget, revenue, currency, unit
+FROM movies m
+LEFT JOIN financials f  
+ON
+m.movie_id = f.movie_id
+UNION 
+SELECT f.movie_id, title, budget, revenue, currency, unit
+FROM movies m
+RIGHT JOIN financials f  
+ON
+m.movie_id = f.movie_id;  #you can input AND m.col1 = f.col1 to use more columns
+
+#USING clause if we have two or more columns we can use to join, but have same names
+SELECT f.movie_id, title, budget, revenue, currency, unit
+FROM movies m
+RIGHT JOIN financials f  #change the movie_id for financials so it displays
+USING (movie_id);
+
+################################## QUESTIONS AND ANSWERS #####################################
+#Show all the movies with their language names
+SELECT title, l.name
+FROM movies m 
+JOIN languages l
+ON m.language_id = l.language_id;
+
+#Show all Telugu movie names (assuming you don't know the language id for Telugu)
+SELECT title
+FROM movies m 
+LEFT JOIN languages l
+ON m.language_id = l.language_id
+WHERE l.name="Telugu";
+
+#Show the language and number of movies released in that language
+SELECT l.name, COUNT(m.movie_id) AS num_of_movies
+FROM languages l 
+JOIN movies m
+USING (language_id)
+GROUP BY language_id;
+
+
+
+
+
+
